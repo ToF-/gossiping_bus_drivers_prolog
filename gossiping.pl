@@ -1,24 +1,32 @@
-:- module(gossiping,[stopAt/3,gossips/3]).
+:- module(gossiping,[stopAt/3,gossips/3,minutes/1,solution/1]).
 
-stops(albert, 4).
-stops(barnabe, 4).
-stops(clara, 5).
+minutes(Minutes) :- 
+    findall(M,between(0,479,M),Minutes).
 
-stop(albert, 0, fleurs).
-stop(albert, 1, planete).
-stop(albert, 2, micadia).
-stop(albert, 3, fleurs).
+/*
+ 3 1 2 3
+ 3 2 3 1
+ 4 2 3 4 5
+*/
+stops(0, 4).
+stops(1, 4).
+stops(3, 5).
 
-stop(barnabe, 0, fleurs).
-stop(barnabe, 1, micadia).
-stop(barnabe, 2, fleurs).
-stop(barnabe, 3, planete).
+stop(0, 0, 3).
+stop(0, 1, 1).
+stop(0, 2, 2).
+stop(0, 3, 3).
 
-stop(clara, 0, melodie).
-stop(clara, 1, micadia).
-stop(clara, 2, fleurs).
-stop(clara, 3, melodie).
-stop(clara, 4, clocher).
+stop(1, 0, 3).
+stop(1, 1, 2).
+stop(1, 2, 3).
+stop(1, 3, 1).
+
+stop(3, 0, 4).
+stop(3, 1, 2).
+stop(3, 2, 3).
+stop(3, 3, 4).
+stop(3, 4, 5).
 
 stopAt(Driver, Minute, Station) :-
     stops(Driver, Stops),
@@ -36,6 +44,10 @@ gossips(Receiver, Minute, Gossips) :-
     foldl(union, AllGossips, [], FoldedGossips),
     sort(FoldedGossips, Gossips).
 
-   
+solution(Result) :-
+    minutes(Minutes),
+    setof(M, M^(member(M,Minutes), setof(D,(gossips(D,M,_)),DS), length(DS,3),!),MS), min_list(MS, Result).
+
+
 
 
