@@ -25,7 +25,7 @@ stopAt(Driver, Minute, Station) :-
     Time is Minute mod Stops,
     stop(Driver, Time, Station). 
 
-gossips(Driver, -1, Driver).
+gossips(Driver, -1, [Driver]).
 
 gossips(Receiver, Minute, Gossips) :-
     Minute >= 0,
