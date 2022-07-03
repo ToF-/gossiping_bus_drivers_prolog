@@ -1,5 +1,7 @@
 :- module(gossiping,[stopAt/3,gossips/3,minutes/1,solution/1]).
 
+:- use_module(library(readutil)).
+
 minutes(Minutes) :- 
     findall(M,between(0,479,M),Minutes).
 
@@ -49,5 +51,9 @@ solution(Result) :-
     setof(M, M^(member(M,Minutes), setof(D,(gossips(D,M,_)),DS), length(DS,3),!),MS), min_list(MS, Result).
 
 
+:- initialization(main, main).
 
-
+main(_) :-
+    readln([MaxDrivers]),
+    write(MaxDrivers),
+    nl.
